@@ -2,7 +2,7 @@
 class Diamond {
     //Location of Diamond
     int x, y;
-    //Maximum size of Siamond
+    //Maximum size of Diamond
     float h;
     //size of Diamond
     float diameter;
