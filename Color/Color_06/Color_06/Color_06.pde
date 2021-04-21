@@ -28,7 +28,7 @@ float[][] state = new float [cols][rows];
 int distance = 10;
 
 void setup() {
-    size(2000, 2000, P2D);
+    size(2000, 2000, OPENGL);
 
     //width and height of each tile
     tileW = width/cols;

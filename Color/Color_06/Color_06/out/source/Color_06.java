@@ -3,8 +3,6 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
-import com.hamoid.*; 
-
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
@@ -21,91 +19,111 @@ public class Color_06 extends PApplet {
   4/20/2021
 */
 
+// import com.hamoid.*;
 
-VideoExport videoExport;
+// VideoExport videoExport;
 
-PImage img;
-
+//Number of rectangle in each col
 int cols = 10;
+//Number of rectangle in each row
 int rows = 10;
 
+//Variables for tile width and height
 int tileW, tileH;
 
+//Timer Object
 Timer timer;
 
+//2d array of lines
 Lines[][] lines = new Lines[cols][rows];
 
+//2d array for random states
 float[][] state = new float [cols][rows];
 
+//Distance between lines
 int distance = 10;
 
 public void setup() {
     
 
+    //width and height of each tile
     tileW = width/cols;
     tileH = height/rows;
 
     
 
-    videoExport = new VideoExport(this);
-    videoExport.startMovie();
+    //Video export 
+    // videoExport = new VideoExport(this);
+    // videoExport.startMovie();
 
+    //Initializing lines objects
     for (int i = 0; i < state.length; ++i) {
         for (int j = 0; j < state.length; ++j) {
             state[i][j] = random(4);
         }
     }
     
-
+    //Iniatializing state objects
     for (int x = 0; x < lines.length; ++x) {
         for (int y = 0; y < lines.length; ++y) {
             lines[x][y] = new Lines(x, y, tileW, distance);
         }
     }
 
+    //Initiaizing timer object
     timer = new Timer(2000);
+    //Start the timer
     timer.start();
 }
 
 public void draw() {
     background(0xfffafaff);
     strokeWeight(2);
-
+    
+    //Reset timer and state objects
     if (timer.isFinished()) {
         for (int i = 0; i < state.length; ++i) {
             for (int j = 0; j < state.length; ++j) {
                 state[i][j] = random(4);
         }
-    }
+    }   
+        //Start Timer
         timer.start();
     }
 
     for (int x = 0; x < lines.length; ++x) {
         for (int y = 0; y < lines.length; ++y) {
             pushMatrix();
+            //Translate to each tile cordinate
             translate(x*tileW, y*tileW);
+            //Draw lines base on state nubers
             lines[x][y].display(state[x][y]);
             popMatrix();
         }
     }
 
-    videoExport.saveFrame();
+    //Save sketch as a movie file
+    // videoExport.saveFrame();
 
 }
 
-public void keyPressed() {
-  if (key == 'q') {
-    videoExport.endMovie();
-    exit();
-  }
-}
+//Press Q for stop the sketch
+// void keyPressed() {
+//   if (key == 'q') {
+//     videoExport.endMovie();
+//     exit();
+//   }
+// }
 
     
 class Lines {
+    //Cordinate of each tile
     int x, y;
+    //Size of each tile
     int radius;
+    //distance between each line in tiles
     int distance;
-    float a;
+    //Variable to stare state random numbers
     float r;
 
     Lines(int _x, int _y, int _radius, int _distance) {
@@ -115,11 +133,13 @@ class Lines {
         distance = _distance;
     }
 
+    //Display function
     public void display(float _r) { 
         stroke(0xffc7383a);
         noFill();
         rect(x, y, radius, radius);
-        r = _r;   
+        r = _r;
+        //Draw each tile base on state argument   
         if (r <= 1 && r >= 0) {
             for (int i = x; i <= x + radius; i += distance) {
                 line(x, y, i, y + radius);
@@ -185,7 +205,7 @@ class Timer {
         }
     }
 }
-  public void settings() {  size(2000, 2000, P2D);  smooth(); }
+  public void settings() {  size(2000, 2000, OPENGL);  smooth(); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Color_06" };
     if (passedArgs != null) {
